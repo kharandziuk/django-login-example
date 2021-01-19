@@ -88,5 +88,5 @@ def together(c):
 
 @task(get_identity)
 def destroy_all(c):
-    destroy_infra(c)
+    destroy_ecs(c)
     destroy_repos(c)
