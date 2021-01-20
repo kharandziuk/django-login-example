@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.http import JsonResponse
+import os
+from django.core import management
+import io
 
 
 class AboutView(LoginRequiredMixin, TemplateView):
@@ -21,4 +24,12 @@ class SignupView(CreateView):
 
 
 def health(request):
-    return JsonResponse({"status": "ok"})
+    stream = io.StringIO()
+    management.call_command("showmigrations", stdout=stream)
+    return JsonResponse(
+        {
+            "db": os.environ["POSTGRES_DB"],
+            "status": "ok",
+            "migrations": stream.getvalue().split(),
+        }
+    )
