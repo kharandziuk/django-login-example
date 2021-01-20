@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, View, CreateView
+from django.views.generic import TemplateView, View, CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
@@ -8,9 +8,15 @@ import os
 from django.core import management
 import io
 
+from core import models
 
-class AboutView(LoginRequiredMixin, TemplateView):
+
+class AboutView(LoginRequiredMixin, ListView):
     template_name = "about.html"
+    model = models.Item
+
+    def get_queryset(self):
+        return self.request.user.items.all()
 
 
 class IndexView(TemplateView):
