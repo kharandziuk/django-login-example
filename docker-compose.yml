@@ -7,7 +7,9 @@ services:
       - ./backend/:/code/
     ports:
       - 8000:$APP_PORT
-    command: ./entrypoint.sh
+    depends_on:
+      - db
+    command: ./wait-for-it.sh db -- ./entrypoint.sh
     environment:
       DEFAULT_ROOT_USER: pass
     env_file:
