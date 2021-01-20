@@ -13,7 +13,7 @@ variable "aws_region" {
 }
 
 variable "backend_service_name" {
-  type    = string
+  type = string
 }
 
 provider "aws" {
@@ -60,7 +60,7 @@ module "alb" {
   enable_https_listener      = false
   enable_http_listener       = true
   enable_deletion_protection = false
-  health_check_path                = "/health"
+  health_check_path          = "/health"
 
   providers = {
     aws = aws
@@ -121,14 +121,14 @@ module "ecs_fargate" {
       ]
       environment = [
         {
-          "name": "DEFAULT_ROOT_USER",
-          "value": "root"
+          "name" : "DEFAULT_ROOT_USER",
+          "value" : "root"
         },
       ]
       secrets = [
         {
-          "name": "DEFAULT_ROOT_PASS",
-          "valueFrom": aws_secretsmanager_secret.admin_pass.arn
+          "name" : "DEFAULT_ROOT_PASS",
+          "valueFrom" : aws_secretsmanager_secret.admin_pass.arn
         }
       ]
     }

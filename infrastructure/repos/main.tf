@@ -13,7 +13,7 @@ variable "aws_region" {
 }
 
 variable "backend_service_name" {
-  type    = string
+  type = string
 }
 
 provider "aws" {

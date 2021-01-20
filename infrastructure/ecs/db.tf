@@ -1,6 +1,6 @@
 resource "aws_security_group" "db" {
-  name        = "${module.label.id}-db-sg"
-  vpc_id      = aws_default_vpc.default.id
+  name   = "${module.label.id}-db-sg"
+  vpc_id = aws_default_vpc.default.id
   tags = {
     Name = "${var.context.stage} db"
   }
