@@ -70,15 +70,13 @@ def build(c):
 @task
 def force_deployment(c):
     result = c.run(
-        "aws ecs list-tasks --cluster default --region $AWS_REGION  --service-name test-api | jq '.taskArns'"
+        "aws ecs list-tasks --cluster $CLUSTER_NAME --region $AWS_REGION  --service-name $SERVICE_NAME | jq '.taskArns'"
     ).stdout.strip()
-    if not result:
-        print("there are no tasks to redeploy")
-        return
-    for servide_id in json.loads(result):
-        c.run(f"aws ecs stop-task --region $AWS_REGION --task {servide_id}")
+    if result:
+        for servide_id in json.loads(result):
+            c.run(f"aws ecs stop-task --region $AWS_REGION --task {servide_id}")
     c.run(
-        "aws ecs update-service --region=$AWS_REGION --cluster default  --service test-api --force-new-deployment"
+        "aws ecs update-service --region=$AWS_REGION --cluster $CLUSTER_NAME  --service $SERVICE_NAME --force-new-deployment"
     )
 
 

@@ -130,8 +130,7 @@ module "ecs_fargate" {
   container_definitions = jsonencode([
     {
       name      = local.container_name
-      #image     = "${data.aws_ecr_repository.backend.repository_url}:latest"
-      image     = "nginx:latest"
+      image     = "${data.aws_ecr_repository.backend.repository_url}:latest"
       essential = true
       log_group = aws_cloudwatch_log_group.api_backend_log_group.name
       logConfiguration = {
