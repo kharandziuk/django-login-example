@@ -60,6 +60,7 @@ module "alb" {
   enable_https_listener      = false
   enable_http_listener       = true
   enable_deletion_protection = false
+  health_check_path                = "/health"
 
   providers = {
     aws = aws

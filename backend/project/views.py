@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 
 
 class AboutView(LoginRequiredMixin, TemplateView):
@@ -17,3 +18,7 @@ class SignupView(CreateView):
     form_class = UserCreationForm
     template_name = "registration/sign-up.html"
     success_url = reverse_lazy("login")
+
+
+def health(request):
+    return JsonResponse({"status": "ok"})
