@@ -148,6 +148,16 @@ module "ecs_fargate" {
           containerPort = 80
         }
       ]
+      environment = [
+        {
+          "name": "DEFAULT_ROOT_USER",
+          "value": "root"
+        },
+        {
+          "name": "DEFAULT_ROOT_PASS",
+          "value": "pass"
+        },
+      ]
     }
   ])
 
