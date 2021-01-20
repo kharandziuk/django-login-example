@@ -8,13 +8,6 @@ from django.urls import reverse_lazy
 class AboutView(LoginRequiredMixin, TemplateView):
     template_name = "about.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(AboutView, self).get_context_data(**kwargs)
-        from IPython.core import debugger
-
-        debugger.Pdb().set_trace()
-        return context
-
 
 class IndexView(TemplateView):
     template_name = "index.html"

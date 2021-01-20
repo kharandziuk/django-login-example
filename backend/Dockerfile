@@ -7,4 +7,4 @@ RUN touch .env
 
 RUN pip install -r requirements.txt
 
-CMD [ "./entrypoint.sh" ]
+CMD [ "./entrypoint-prod.sh" ]
