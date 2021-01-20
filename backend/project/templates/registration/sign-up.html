@@ -1,0 +1,16 @@
+<h1>sign-up</h1>
+<form action="." method="POST">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% if form.errors %}
+  <div id="form-error">
+    <ul>
+      {% for field in form %}
+        <li>{{ field.errors|striptags }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {{ form.as_p }}
+  <input type="submit" value="Login">
+</form>

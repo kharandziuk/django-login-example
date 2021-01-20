@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/:/code/
+    ports:
+      - 8000:$APP_PORT
+    command: ./entrypoint.sh
+    env_file:
+      - .env
