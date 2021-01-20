@@ -24,13 +24,12 @@ from django.urls import reverse_lazy
 from . import views
 
 urlpatterns = [
-    path("", RedirectView.as_view(url=reverse_lazy("about")), name="index"),
+    path("", RedirectView.as_view(url=reverse_lazy("core:item-list")), name="index"),
     path("health/", views.health),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("about/", views.AboutView.as_view(), name="about"),
     path("sign-up/", views.SignupView.as_view(), name="sign-up"),
     path("admin/", admin.site.urls),
-    # path("", include("social_django.urls", namespace="social")),
+    path("items/", include("core.urls", namespace="core")),
     # path("auth/", include("rest_framework_social_oauth2.urls")),
 ]

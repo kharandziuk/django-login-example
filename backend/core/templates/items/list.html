@@ -3,9 +3,9 @@ hey-hey, your name is: {{ user.username }} <a href="{% url 'logout' %}">logout</
 <h1>Items</h1>
 <ul>
   {% for item in object_list %}
-    <li>{{ item.Name}}</li>
+    <li>{{ item.name}}</li>
   {% empty %}
     <li>No items yet.</li>
   {% endfor %}
 </ul>
-<a href="{% url 'item:create' %}">Create item</a>
+<a href="{% url 'core:item-create' %}">Create item</a>
