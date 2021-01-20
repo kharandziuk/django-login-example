@@ -9,9 +9,9 @@ services:
       - 8000:$APP_PORT
     depends_on:
       - db
-    command: ./wait-for-it.sh db -- ./entrypoint.sh
+    command: ./wait-for-it.sh db:5432 -- ./entrypoint.sh
     environment:
-      DEFAULT_ROOT_USER: pass
+      DEFAULT_ROOT_USER: root
     env_file:
       - .env
 
