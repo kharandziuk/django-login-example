@@ -30,6 +30,6 @@ def health(request):
         {
             "db": os.environ["POSTGRES_DB"],
             "status": "ok",
-            "migrations": stream.getvalue().split(),
+            "migrations": stream.getvalue().split("\n"),
         }
     )
