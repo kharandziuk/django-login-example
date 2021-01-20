@@ -2,7 +2,7 @@ resource "aws_security_group" "db" {
   name   = "${module.label.id}-db-sg"
   vpc_id = aws_default_vpc.default.id
   tags = {
-    Name = "${var.context.stage} db"
+    Name = "${module.label.stage} db"
   }
 }
 
@@ -16,14 +16,17 @@ resource "aws_security_group_rule" "db_from_ebs" {
 }
 
 
+locals {
+  db_name = replace(module.label.id, "-", "")
+  db_user = replace("${module.label.id}-user", "-", "")
+}
+
 
 module "rds_instance" {
   source    = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=tags/0.22.0"
-  namespace = var.context.namespace
-  stage     = var.context.stage
+  namespace = module.label.namespace
+  stage     = module.label.stage
   name      = "${module.label.id}-db"
-
-  host_name = "${module.label.id}-db"
 
   security_group_ids = [
     module.ecs_fargate.security_group_id,
@@ -31,8 +34,8 @@ module "rds_instance" {
   ]
 
   allowed_cidr_blocks     = [aws_default_vpc.default.cidr_block]
-  database_name           = "${module.label.id}-db"
-  database_user           = var.db_user
+  database_name           = local.db_name
+  database_user           = local.db_user
   database_password       = var.db_password
   database_port           = var.db_port
   engine                  = "postgres"

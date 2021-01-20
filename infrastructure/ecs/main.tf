@@ -124,6 +124,22 @@ module "ecs_fargate" {
           "name" : "DEFAULT_ROOT_USER",
           "value" : "root"
         },
+        {
+          "name" : "POSTGRES_USER",
+          "value" : local.db_user
+        },
+        {
+          "name" : "POSTGRES_PASSWORD",
+          "value" : var.db_password
+        },
+        {
+          "name" : "POSTGRES_DB",
+          "value" : local.db_name
+        },
+        {
+          "name" : "POSTGRES_HOSTNAME",
+          "value" : module.rds_instance.instance_address
+        },
       ]
       secrets = [
         {
