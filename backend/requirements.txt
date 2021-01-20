@@ -14,3 +14,4 @@ djangorestframework
 django-cors-headers
 django-extensions
 gunicorn
+psycopg2-binary
