@@ -8,5 +8,7 @@ services:
     ports:
       - 8000:$APP_PORT
     command: ./entrypoint.sh
+    environment:
+      DEFAULT_ROOT_USER: pass
     env_file:
       - .env

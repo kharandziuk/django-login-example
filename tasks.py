@@ -87,6 +87,8 @@ def together(c):
     build(c)
     apply_ecs(c)
     force_deployment(c)
+    with c.cd("infrastructure/ecs"):
+        repo_url = c.run("terraform output dns").stdout.split()[0]
 
 
 @task(get_identity)
