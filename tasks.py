@@ -20,7 +20,9 @@ def develop(c):
 
 @task
 def get_identity(c):
-    c.run("aws sts get-caller-identity")
+    c.config["accound_id"] = c.run(
+        'aws sts get-caller-identity | jq ".Account"'
+    ).stdout.strip()
 
 
 @task(get_identity)
@@ -49,10 +51,9 @@ def destroy_ecs(c):
 
 @task
 def login(c):
-    # FIXME: hardcoded region
     c.run(
-        f"aws ecr get-login-password --region eu-central-1 | "
-        "docker login --username AWS --password-stdin 818979561351.dkr.ecr.eu-central-1.amazonaws.com"
+        f"aws ecr get-login-password --region $AWS_REGION | "
+        f"docker login --username AWS --password-stdin {c.accound_id}.dkr.ecr.eu-central-1.amazonaws.com"
     )
 
 
@@ -71,6 +72,9 @@ def force_deployment(c):
     result = c.run(
         "aws ecs list-tasks --cluster default --region $AWS_REGION  --service-name test-api | jq '.taskArns'"
     ).stdout.strip()
+    if not result:
+        print("there are no tasks to redeploy")
+        return
     for servide_id in json.loads(result):
         c.run(f"aws ecs stop-task --region $AWS_REGION --task {servide_id}")
     c.run(
@@ -81,6 +85,7 @@ def force_deployment(c):
 @task(get_identity)
 def together(c):
     apply_repos(c)
+    login(c)
     build(c)
     apply_ecs(c)
     force_deployment(c)
