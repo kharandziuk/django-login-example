@@ -3,7 +3,6 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 COPY . /code/
 WORKDIR /code/
-RUN touch .env
 
 RUN pip install -r requirements.txt
 
