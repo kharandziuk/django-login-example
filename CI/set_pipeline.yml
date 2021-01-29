@@ -17,13 +17,9 @@ jobs:
       - set_pipeline: set-pipelines
         file: main-repo/CI/set_pipeline.yml
 
-  - name: validate styles
+  - name: validate-code
     plan:
       - get: main-repo
         trigger: true
-      - run:
-        path: sh
-        args:
-        - -exc
-        - |
-          whoami
+      - task: run-hooks
+        file: main-repo/CI/validate.yml
