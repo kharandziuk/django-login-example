@@ -7,10 +7,15 @@ image_resource:
     repository: python
     tag: '3.8'
 
+inputs:
+  - name: main-repo
+
 run:
   path: sh
   args:
   - -exc
   - |
+    ls ./main-repo
+    cd ./main-repo
     pip install -r requirements.txt
     inv format-code
