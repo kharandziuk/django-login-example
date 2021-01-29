@@ -9,6 +9,7 @@ UserModel = get_user_model()
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
+    price = models.CharField(max_length=255, null=True, blank=True)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="items"
     )

@@ -129,10 +129,6 @@ module "ecs_fargate" {
           "value" : local.db_user
         },
         {
-          "name" : "POSTGRES_PASSWORD",
-          "value" : var.db_password
-        },
-        {
           "name" : "POSTGRES_DB",
           "value" : local.db_name
         },
@@ -140,12 +136,16 @@ module "ecs_fargate" {
           "name" : "POSTGRES_HOSTNAME",
           "value" : module.rds_instance.instance_address
         },
+        {
+          "name" : "POSTGRES_PASSWORD",
+          "value" : "kapakabana"
+        },
       ]
       secrets = [
         {
           "name" : "DEFAULT_ROOT_PASS",
           "valueFrom" : aws_secretsmanager_secret.admin_pass.arn
-        }
+        },
       ]
     }
   ])

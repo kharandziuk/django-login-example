@@ -39,7 +39,8 @@ resource "aws_iam_policy" "access_secrets" {
                 "secretsmanager:GetSecretValue"
             ],
             "Resource": [
-              "${aws_secretsmanager_secret.admin_pass.arn}"
+              "${aws_secretsmanager_secret.admin_pass.arn}",
+              "${aws_secretsmanager_secret.db_pass.arn}"
             ]
         }
     ]

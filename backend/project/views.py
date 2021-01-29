@@ -7,6 +7,8 @@ import os
 from django.core import management
 import io
 
+import hashlib
+
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -21,10 +23,7 @@ class SignupView(CreateView):
 def health(request):
     stream = io.StringIO()
     management.call_command("showmigrations", stdout=stream)
+    s = stream.getvalue()
     return JsonResponse(
-        {
-            "db": os.environ["POSTGRES_DB"],
-            "status": "ok",
-            "migrations": stream.getvalue().split("\n"),
-        }
+        {"db": os.environ["POSTGRES_DB"], "status": "ok", "migrations": s}
     )

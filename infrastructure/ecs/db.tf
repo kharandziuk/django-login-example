@@ -36,7 +36,7 @@ module "rds_instance" {
   allowed_cidr_blocks     = [aws_default_vpc.default.cidr_block]
   database_name           = local.db_name
   database_user           = local.db_user
-  database_password       = var.db_password
+  database_password       = "kapakabana"
   database_port           = var.db_port
   engine                  = "postgres"
   engine_version          = "10.13"

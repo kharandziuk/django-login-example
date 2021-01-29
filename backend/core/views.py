@@ -17,4 +17,4 @@ class ItemCreateView(CreateView):
     template_name = "items/create.html"
     model = models.Item
     success_url = reverse_lazy("core:item-list")
-    fields = ("name", "owner")
+    fields = ("name", "owner", "price")

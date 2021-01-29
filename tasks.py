@@ -38,9 +38,12 @@ def destroy_repos(c):
 
 
 @task(get_identity)
-def apply_ecs(c):
+def apply_ecs(c, snapshot_identifier=None):
+    snapshot_opt = ""
+    if snapshot_identifier:
+        snapshot_opt = f"-var 'snapshot_identifier={snapshot_identifier}'"
     with c.cd("infrastructure/ecs"):
-        c.run("terraform init && terraform apply --auto-approve")
+        c.run(f"terraform init && terraform apply --auto-approve {snapshot_opt}")
 
 
 @task
@@ -80,6 +83,38 @@ def force_deployment(c):
     )
 
 
+@task
+def backup(c):
+    c.run(
+        "aws rds create-db-snapshot --region $AWS_REGION "
+        "--db-snapshot-identifier max-db-snapshot "
+        "--db-instance-identifier max-dev-max-dev-test-db"
+    )
+
+
+@task
+def restore(c):
+    # c.run(
+    # 'aws rds modify-db-instance --region $AWS_REGION '
+    # '--db-instance-identifier max-dev-max-dev-test-db '
+    # '--new-db-instance-identifier old-max-dev-max-dev-test-db '
+    # '--apply-immediately'
+    # )
+    with c.cd("infrastructure/ecs"):
+        c.run(
+            "terraform init && terraform destroy --auto-approve --target=module.rds_instance"
+        )
+    apply_ecs(c, snapshot_identifier="max-db-snapshot")
+
+
+@task
+def list(c):
+    c.run(
+        "aws rds describe-db-snapshots --region $AWS_REGION "
+        "--db-instance-identifier max-dev-max-dev-test-db"
+    )
+
+
 @task(get_identity)
 def together(c):
     apply_repos(c)
@@ -88,7 +123,13 @@ def together(c):
     apply_ecs(c)
     force_deployment(c)
     with c.cd("infrastructure/ecs"):
-        repo_url = c.run("terraform output dns").stdout.split()[0]
+        c.run("terraform output dns")
+
+
+@task(get_identity)
+def refresh(c):
+    with c.cd("infrastructure/ecs"):
+        c.run("terraform refresh")
 
 
 @task(get_identity)
