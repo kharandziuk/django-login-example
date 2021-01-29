@@ -19,6 +19,16 @@ def develop(c):
 
 
 @task
+def tests(c):
+    c.run(
+        "docker-compose "
+        "-f docker-compose.yml "
+        "-f compose-files/docker-compose.test.yml "
+        "up --exit-code-from backend"
+    )
+
+
+@task
 def get_identity(c):
     c.config["accound_id"] = c.run(
         'aws sts get-caller-identity | jq ".Account"'

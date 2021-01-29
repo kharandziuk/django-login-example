@@ -4,11 +4,11 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: python
-    tag: '3.8'
+    repository: docker/compose
 
 inputs:
   - name: main-repo
+  - name: validate
 
 run:
   path: sh
@@ -17,5 +17,4 @@ run:
   - |
     cd ./main-repo
     pip install -r requirements.txt
-    rm -rf infrastructure # HACK: terraform validates in the other job
-    inv format-code
+    inv tests

@@ -25,3 +25,8 @@ jobs:
         file: main-repo/CI/validate.yml
       - task: validate-terraform
         file: main-repo/CI/validate-terraform.yml
+
+  - name: tests
+    plan:
+      - task: unit-test
+        file: main-repo/CI/unit-tests.yml
