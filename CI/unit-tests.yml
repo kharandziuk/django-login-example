@@ -8,7 +8,6 @@ image_resource:
 
 inputs:
   - name: main-repo
-  - name: validate
 
 run:
   path: sh
@@ -16,5 +15,7 @@ run:
   - -exc
   - |
     cd ./main-repo
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python get-pip.py
     pip install -r requirements.txt
     inv tests

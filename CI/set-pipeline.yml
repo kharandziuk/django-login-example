@@ -28,5 +28,7 @@ jobs:
 
   - name: tests
     plan:
+      - get: main-repo
+        trigger: true
       - task: unit-test
         file: main-repo/CI/unit-tests.yml
