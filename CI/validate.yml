@@ -17,3 +17,5 @@ run:
   - |
     cd ./main-repo
     pip install -r requirements.txt
+    rm -rf infrastructure # HACK: terraform validated in the other job
+    inv format-code

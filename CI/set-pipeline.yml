@@ -15,7 +15,7 @@ jobs:
       - get: main-repo
         trigger: true
       - set_pipeline: set-pipelines
-        file: main-repo/CI/set_pipeline.yml
+        file: main-repo/CI/set-pipeline.yml
 
   - name: validate-code
     plan:
@@ -23,3 +23,5 @@ jobs:
         trigger: true
       - task: run-hooks
         file: main-repo/CI/validate.yml
+      - task: run-hooks
+        file: main-repo/CI/validate-terraform.yml

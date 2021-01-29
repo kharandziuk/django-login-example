@@ -8,12 +8,12 @@ image_resource:
     tag: '0.12.29'
 
 inputs:
-  - name: main-repo
+  - name: main-repo/infrastructure
 
 run:
   path: sh
   args:
   - -exc
   - |
-    cd ./main-repo
+    cd ./main-repo/infrastructure
     terraform fmt --check --recursive
