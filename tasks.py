@@ -8,7 +8,7 @@ load_dotenv()
 
 
 @task
-def validate_code(c):
+def format_code(c):
     c.run("pre-commit install")
     c.run("pre-commit run --all-files")
 

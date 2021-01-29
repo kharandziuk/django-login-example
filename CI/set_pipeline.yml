@@ -16,3 +16,14 @@ jobs:
         trigger: true
       - set_pipeline: set-pipelines
         file: concourse-examples/ci/set_pipeline.yml
+
+  - name: validate styles
+    plan:
+      - get: main-repo
+        trigger: true
+      - run:
+        path: sh
+        args:
+        - -exc
+        - |
+          whoami
