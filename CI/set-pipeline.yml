@@ -21,7 +21,7 @@ jobs:
     plan:
       - get: main-repo
         trigger: true
-      - task: run-hooks
+      - task: validate-code
         file: main-repo/CI/validate.yml
-      - task: run-hooks
+      - task: validate-terraform
         file: main-repo/CI/validate-terraform.yml

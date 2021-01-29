@@ -154,7 +154,7 @@ def concourse_login(c):
 
 @task(concourse_login)
 def set_pipelines(c):
-    c.run(f"fly -t {CI_NAME} set-pipeline -c ./CI/set_pipeline.yml -p {PIPELINE_NAME}")
+    c.run(f"fly -t {CI_NAME} set-pipeline -c ./CI/set-pipeline.yml -p {PIPELINE_NAME}")
 
 
 @task
