@@ -136,3 +136,32 @@ def refresh(c):
 def destroy_all(c):
     destroy_ecs(c)
     destroy_repos(c)
+
+
+@task
+def ci_server(c):
+    c.run("docker-compose up -d")
+
+
+CI_NAME = "dle"
+PIPELINE_NAME = "update-pipelines"
+
+
+@task
+def concourse_login(c):
+    c.run(f"fly login -t {CI_NAME} -u test -p test -c http://localhost:8080")
+
+
+@task(concourse_login)
+def set_pipelines(c):
+    c.run(f"fly -t {CI_NAME} set-pipeline -c ./CI/set_pipeline.yml -p {PIPELINE_NAME}")
+
+
+@task
+def unpause(c):
+    c.run(f"fly -t {CI_NAME} unpause-job --job {PIPELINE_NAME}/set-self")
+
+
+@task
+def trigger(c):
+    c.run(f"fly -t {CI_NAME} trigger-job --job {PIPELINE_NAME}/set-self")

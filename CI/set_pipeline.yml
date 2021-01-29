@@ -1,0 +1,18 @@
+---
+resources:
+  - name: main-repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/kharandziuk/django-login-example
+
+
+jobs:
+  # update this pipeline before updating child pipelines
+  - name: set-self
+    public: true
+    plan:
+      - get: main-repo
+        trigger: true
+      - set_pipeline: set-pipelines
+        file: concourse-examples/ci/set_pipeline.yml
