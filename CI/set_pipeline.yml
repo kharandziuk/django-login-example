@@ -15,7 +15,7 @@ jobs:
       - get: main-repo
         trigger: true
       - set_pipeline: set-pipelines
-        file: concourse-examples/ci/set_pipeline.yml
+        file: main-repo/CI/set_pipeline.yml
 
   - name: validate styles
     plan:
