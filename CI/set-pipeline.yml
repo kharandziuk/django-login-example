@@ -31,4 +31,5 @@ jobs:
       - get: main-repo
         trigger: true
       - task: unit-test
+        privileged: true
         file: main-repo/CI/unit-tests.yml

@@ -9,15 +9,15 @@ image_resource:
 inputs:
   - name: main-repo
 
+
 run:
-  path: sh
+  path: bash
   args:
   - -exc
   - |
+    source /docker-lib.sh
     cd ./main-repo
     touch .env
-    source /docker-lib.sh
     start_docker
-    docker-compose up --exit-code-from client
     pip install -r requirements.txt
     APP_PORT=80 inv tests
