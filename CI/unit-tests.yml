@@ -2,9 +2,9 @@
 platform: linux
 
 image_resource:
-  type: registry-image
+  type: docker-image
   source:
-    repository: docker/compose
+    repository: amidos/dcind
 
 inputs:
   - name: main-repo
@@ -16,8 +16,8 @@ run:
   - |
     cd ./main-repo
     touch .env
-    apk add curl python3 bash
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3 get-pip.py
+    source /docker-lib.sh
+    start_docker
+    docker-compose up --exit-code-from client
     pip install -r requirements.txt
-    APP_PORT=1600 inv tests
+    APP_PORT=80 inv tests
