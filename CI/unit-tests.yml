@@ -17,7 +17,7 @@ run:
   - |
     source /docker-lib.sh
     cd ./main-repo
-    touch .env
+    cp  dotenv.example .env
     apk add python3
     start_docker
     pip3 install -r requirements.txt
