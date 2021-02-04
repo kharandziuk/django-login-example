@@ -1,0 +1,27 @@
+---
+resources:
+  - name: main-repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/kharandziuk/django-login-example
+      branch: main
+
+jobs:
+  - name: deploy-staging
+    plan:
+      - get: main-repo
+      - task: print
+        config:
+          platform: linux
+
+          image_resource:
+            type: registry-image
+            source: {repository: ubuntu}
+
+          run:
+            path: bash
+            args:
+            - -exc
+            - |
+              echo simple: ((simple))

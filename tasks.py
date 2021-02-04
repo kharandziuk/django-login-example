@@ -168,14 +168,13 @@ def concourse_login(c):
 
 
 @task(concourse_login)
-def set_pipelines(c, name=PIPELINE_NAME):
-    pipeline_name = name
-    assert pipeline_name
+def set_pipelines(c):
     GAT = os.getenv("GAT")
-    c.run(
-        f"fly -t {CI_NAME} set-pipeline -c ./CI/{pipeline_name}.yml -p {pipeline_name} "
-        f'-v github-access-token="{GAT}"'
-    )
+    for pipeline_name in ["on-pr", "on-merge"]:
+        c.run(
+            f"fly -t {CI_NAME} set-pipeline -c ./CI/{pipeline_name}.yml -p {pipeline_name} "
+            f'-v github-access-token="{GAT}"'
+        )
 
 
 @task
