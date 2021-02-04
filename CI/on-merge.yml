@@ -25,4 +25,4 @@ jobs:
             args:
             - -exc
             - |
-              echo simple: ((simple))
+              echo simple: "hi max"
