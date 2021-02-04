@@ -11,6 +11,7 @@ jobs:
   - name: deploy-staging
     plan:
       - get: main-repo
+        trigger: true
       - task: print
         config:
           platform: linux
