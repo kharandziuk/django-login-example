@@ -10,12 +10,17 @@ load_dotenv()
 @task
 def format_code(c):
     c.run("pre-commit install")
-    c.run("pre-commit run --all-files")
+    c.run("SKIP=terraform_fmt pre-commit run --all-files")
 
 
 @task
 def develop(c):
     c.run("docker-compose up")
+
+
+@task
+def develop_flush(c):
+    c.run("docker-compose build")
 
 
 @task
@@ -154,7 +159,7 @@ def ci_server(c):
 
 
 CI_NAME = "dle"
-PIPELINE_NAME = "update-pipelines"
+PIPELINE_NAME = "on-pr"
 
 
 @task
@@ -163,8 +168,14 @@ def concourse_login(c):
 
 
 @task(concourse_login)
-def set_pipelines(c):
-    c.run(f"fly -t {CI_NAME} set-pipeline -c ./CI/set-pipeline.yml -p {PIPELINE_NAME}")
+def set_pipelines(c, name=PIPELINE_NAME):
+    pipeline_name = name
+    assert pipeline_name
+    GAT = os.getenv("GAT")
+    c.run(
+        f"fly -t {CI_NAME} set-pipeline -c ./CI/{pipeline_name}.yml -p {pipeline_name} "
+        f'-v github-access-token="{GAT}"'
+    )
 
 
 @task
@@ -173,5 +184,7 @@ def unpause(c):
 
 
 @task
-def trigger(c):
-    c.run(f"fly -t {CI_NAME} trigger-job --job {PIPELINE_NAME}/set-self")
+def trigger(c, name=PIPELINE_NAME):
+    assert name
+    pipeline_name = name
+    c.run(f"fly -t {CI_NAME} trigger-job --job {pipeline_name}/print-creds")

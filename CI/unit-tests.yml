@@ -7,7 +7,7 @@ image_resource:
     repository: amidos/dcind
 
 inputs:
-  - name: main-repo
+  - name: pull-request
 
 
 run:
@@ -16,7 +16,7 @@ run:
   - -exc
   - |
     source /docker-lib.sh
-    cd ./main-repo
+    cd ./pull-request
     cp  dotenv.example .env
     apk add python3
     start_docker
