@@ -6,8 +6,6 @@ resources:
     source:
       uri: https://github.com/kharandziuk/django-login-example
       branch: main
-      paths:
-      - "/infrastructure"
 
 jobs:
   - name: deploy-staging
