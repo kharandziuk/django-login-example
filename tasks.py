@@ -46,6 +46,11 @@ def apply_repos(c):
         c.run("terraform init && terraform apply --auto-approve")
 
 
+def apply(c, directory):
+    with c.cd(f"infrastructure/{directory}"):
+        c.run("terraform init && terraform apply --auto-approve")
+
+
 @task
 def destroy_repos(c):
     with c.cd("infrastructure/repos"):
@@ -58,7 +63,9 @@ def apply_ecs(c, snapshot_identifier=None):
     if snapshot_identifier:
         snapshot_opt = f"-var 'snapshot_identifier={snapshot_identifier}'"
     with c.cd("infrastructure/ecs"):
-        c.run(f"terraform init && terraform apply --auto-approve {snapshot_opt}")
+        c.run(
+            f"terraform init --reconfigure && terraform apply --auto-approve {snapshot_opt}"
+        )
 
 
 @task
@@ -81,6 +88,7 @@ def build(c):
         repo_url = c.run("terraform output backend_repo_url").stdout.split()[0]
     if not repo_url:
         return
+    hash = c.run("git rev-parse").stdout.split()
     c.run(f"docker build -t {repo_url} ./backend")
     c.run(f"docker push {repo_url}")
 
@@ -155,6 +163,7 @@ def refresh(c):
 
 @task(get_identity)
 def destroy_all(c):
+    ecs_stop(c)
     destroy_ecs(c)
     destroy_repos(c)
 
@@ -192,4 +201,13 @@ def unpause(c):
 def trigger(c, name=PIPELINE_NAME):
     assert name
     pipeline_name = name
-    c.run(f"fly -t {CI_NAME} trigger-job --job {pipeline_name}/print-creds")
+
+
+@task(get_identity)
+def apply_pre(c):
+    apply(c, "pre")
+
+
+@task(get_identity)
+def apply_secrets(c):
+    apply(c, "secrets")
