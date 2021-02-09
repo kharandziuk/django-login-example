@@ -7,6 +7,14 @@ terraform {
   }
 }
 
+terraform {
+  backend "s3" {
+    bucket = "terraform-max-states"
+    key    = "dev"
+    region = "eu-central-1"
+  }
+}
+
 variable "aws_region" {
   default = "eu-central-1"
   type    = string
@@ -144,7 +152,7 @@ module "ecs_fargate" {
       secrets = [
         {
           "name" : "DEFAULT_ROOT_PASS",
-          "valueFrom" : aws_secretsmanager_secret.admin_pass.arn
+          "valueFrom" : data.aws_secretsmanager_secret.admin_pass.arn
         },
       ]
     }
