@@ -1,20 +1,23 @@
 ---
 resources:
-  - name: main-repo-infra
+  - name: main-repo-infrastructure
     type: git
     icon: github
     source:
       uri: https://github.com/kharandziuk/django-login-example
       branch: main
-      paths: '/infrastructure'
+      paths:
+      - "/infrastructure"
 
 jobs:
   - name: deploy-staging
     plan:
       - get: main-repo-infrastructure
         trigger: true
-      - task: print
+      - task: terraform
         config:
+          inputs:
+            - name: main-repo-infrastructure
           platform: linux
 
           image_resource:
@@ -27,6 +30,7 @@ jobs:
             args:
             - -exc
             - |
+              ls
               wget https://releases.hashicorp.com/terraform/0.12.21/terraform_0.12.21_linux_amd64.zip
               RUN unzip terraform_0.12.21_linux_amd64.zip && rm terraform_0.12.21_linux_amd64.zip
               mv terraform /usr/bin/terraform
