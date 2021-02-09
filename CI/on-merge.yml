@@ -21,7 +21,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              image: python:3.8-alpine
+              image: python
+              tag: 3.8-alpine
 
           run:
             path: bash
